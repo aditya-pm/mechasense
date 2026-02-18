@@ -2,99 +2,128 @@
 <html>
 
 <head>
+    <title>Interactive Laptop Exploded View</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
 </head>
 
 <body>
-    <a-scene>
+    <a-scene cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .interactable">
 
-        <!-- Environment -->
-        <a-sky color="#cfe8ff"></a-sky>
-        <a-plane rotation="-90 0 0" width="20" height="20" color="#d9d9d9"></a-plane>
+        <a-assets>
+            <a-mixin id="part-material" material="metalness: 0.6; roughness: 0.4"></a-mixin>
+            <a-mixin id="label-text" text="align: center; width: 2; color: #5EFBFF" position="0 0.4 0"></a-mixin>
+        </a-assets>
 
-        <!-- Lights -->
-        <a-light type="ambient" intensity="0.7"></a-light>
-        <a-light type="directional" position="2 4 3" intensity="1"></a-light>
+        <a-entity environment="preset: tron; lighting: point; groundColor: #111; grid: dashed"></a-entity>
 
-        <a-entity id="laptop" position="0 1.2 -3">
+        <a-entity id="laptop-rig" position="0 1 -3" rotation="0 45 0">
 
-            <!-- Base -->
-            <a-box id="base" width="1.2" height="0.05" depth="0.8" material="color:#555; metalness:0.7"></a-box>
+            <a-entity id="chassis-group">
+                <a-box id="base" width="1.2" height="0.05" depth="0.8" color="#222" mixin="part-material"></a-box>
+                <a-box id="keyboard" width="1" height="0.02" depth="0.5" position="0 0.04 0.05" color="#111"
+                    class="interactable"></a-box>
+                <a-box id="trackpad" width="0.3" height="0.01" depth="0.2" position="0 0.03 0.3" color="#333"></a-box>
+            </a-entity>
 
-            <!-- Keyboard -->
-            <a-box id="keyboard" width="1" height="0.02" depth="0.5" position="0 0.04 0" material="color:#333"></a-box>
+            <a-entity id="screen-assembly" position="0 0.45 -0.4">
+                <a-box id="screen_frame" width="1.2" height="0.75" depth="0.03" color="#222" mixin="part-material"
+                    class="interactable"></a-box>
+                <a-box id="screen" width="1.1" height="0.65" depth="0.01" position="0 0 0.02" color="#0a0a0a"
+                    emissive="#111"></a-box>
+                <a-text value="4K LED PANEL" id="label-screen" mixin="label-text" visible="false"></a-text>
+            </a-entity>
 
-            <!-- Trackpad -->
-            <a-box id="trackpad" width="0.3" height="0.01" depth="0.2" position="0 -0.01 0.25"
-                material="color:#888"></a-box>
+            <a-box id="motherboard" width="0.7" height="0.02" depth="0.4" position="0 -0.01 -0.1"
+                color="#004d00"></a-box>
 
-            <!-- Screen frame -->
-            <a-box id="screen_frame" width="1.2" height="0.75" depth="0.03" position="0 0.45 -0.4"
-                material="color:#444"></a-box>
+            <a-entity id="cpu-node" position="0.2 0.05 -0.1" class="interactable">
+                <a-box id="cpu" width="0.15" height="0.03" depth="0.15" color="#FFD700"></a-box>
+                <a-text value="CPU (Core i9)" id="label-cpu" mixin="label-text" visible="false"></a-text>
+            </a-entity>
 
-            <!-- Screen -->
-            <a-box id="screen" width="1.1" height="0.65" depth="0.01" position="0 0.45 -0.39"
-                material="color:#111"></a-box>
+            <a-entity id="ram-node" position="-0.2 0.05 -0.1" class="interactable">
+                <a-box id="ram" width="0.35" height="0.02" depth="0.1" color="#008000"></a-box>
+                <a-text value="32GB DDR5 RAM" id="label-ram" mixin="label-text" visible="false"></a-text>
+            </a-entity>
 
-            <!-- Motherboard -->
-            <a-box id="motherboard" width="0.7" height="0.02" depth="0.4" position="0 -0.03 -0.1"
-                material="color:#1f7a1f"></a-box>
+            <a-entity id="battery-node" position="0 -0.02 0.3" class="interactable">
+                <a-box id="battery" width="0.5" height="0.04" depth="0.2" color="#555"></a-box>
+                <a-text value="99Wh Li-on BATTERY" id="label-battery" mixin="label-text" visible="false"></a-text>
+            </a-entity>
 
-            <!-- CPU -->
-            <a-box id="cpu" width="0.15" height="0.03" depth="0.15" position="0.2 0.05 -0.1"
-                material="color:gold"></a-box>
-
-            <!-- RAM -->
-            <a-box id="ram" width="0.35" height="0.02" depth="0.1" position="-0.2 0.05 -0.1"
-                material="color:green"></a-box>
-
-            <!-- Battery -->
-            <a-box id="battery" width="0.5" height="0.04" depth="0.2" position="0 -0.02 0.3"
-                material="color:#cc6600"></a-box>
-
-            <!-- Fan -->
-            <a-cylinder id="fan" radius="0.07" height="0.03" position="0.4 0.04 -0.2"
-                material="color:black"></a-cylinder>
+            <a-entity id="fan-node" position="0.4 0.04 -0.2" class="interactable">
+                <a-cylinder id="fan" radius="0.07" height="0.03" color="#111"></a-cylinder>
+                <a-text value="TURBO FAN" id="label-fan" mixin="label-text" visible="false"></a-text>
+            </a-entity>
 
         </a-entity>
 
-        <a-camera position="0 1.6 0">
-            <a-cursor></a-cursor>
+        <a-camera position="0 1.6 1">
+            <a-cursor color="#5EFBFF"
+                animation__click="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"></a-cursor>
         </a-camera>
 
     </a-scene>
 
     <script>
         let exploded = false;
+        const rig = document.querySelector("#laptop-rig");
 
-        document.querySelector("a-scene").addEventListener("click", function () {
-
+        // Click to Explode/Collapse
+        document.body.addEventListener("click", function () {
             if (!exploded) {
+                // Move components out with easing
+                animate("#battery-node", "0 0.5 1.2");
+                animate("#ram-node", "-0.8 0.6 -0.1");
+                animate("#cpu-node", "0.8 0.6 -0.1");
+                animate("#fan-node", "1.1 0.6 -0.5");
+                animate("#screen-assembly", "0 1.5 -1");
 
-                document.querySelector("#battery").setAttribute("animation", "property: position; to: 0 -0.3 0.9; dur: 800");
-                document.querySelector("#ram").setAttribute("animation", "property: position; to: -0.6 0.3 -0.2; dur: 800");
-                document.querySelector("#cpu").setAttribute("animation", "property: position; to: 0.6 0.3 -0.2; dur: 800");
-                document.querySelector("#fan").setAttribute("animation", "property: position; to: 0.9 0.3 -0.4; dur: 800");
-                document.querySelector("#screen_frame").setAttribute("animation", "property: position; to: 0 1.2 -0.7; dur: 800");
-                document.querySelector("#screen").setAttribute("animation", "property: position; to: 0 1.2 -0.68; dur: 800");
-
+                // Show Labels
+                toggleLabels(true);
                 exploded = true;
-
             } else {
+                // Return to original positions
+                animate("#battery-node", "0 -0.02 0.3");
+                animate("#ram-node", "-0.2 0.05 -0.1");
+                animate("#cpu-node", "0.2 0.05 -0.1");
+                animate("#fan-node", "0.4 0.04 -0.2");
+                animate("#screen-assembly", "0 0.45 -0.4");
 
-                document.querySelector("#battery").setAttribute("animation", "property: position; to: 0 -0.02 0.3; dur: 800");
-                document.querySelector("#ram").setAttribute("animation", "property: position; to: -0.2 0.05 -0.1; dur: 800");
-                document.querySelector("#cpu").setAttribute("animation", "property: position; to: 0.2 0.05 -0.1; dur: 800");
-                document.querySelector("#fan").setAttribute("animation", "property: position; to: 0.4 0.04 -0.2; dur: 800");
-                document.querySelector("#screen_frame").setAttribute("animation", "property: position; to: 0 0.45 -0.4; dur: 800");
-                document.querySelector("#screen").setAttribute("animation", "property: position; to: 0 0.45 -0.39; dur: 800");
-
+                toggleLabels(false);
                 exploded = false;
             }
+        });
 
+        // Helper function for smooth animation
+        function animate(selector, toPos) {
+            document.querySelector(selector).setAttribute("animation", {
+                property: 'position',
+                to: toPos,
+                dur: 1000,
+                easing: 'easeOutElastic'
+            });
+        }
+
+        // Show/Hide text labels
+        function toggleLabels(show) {
+            const labels = document.querySelectorAll("a-text");
+            labels.forEach(l => l.setAttribute("visible", show));
+        }
+
+        // Hover Effect: Highlight parts
+        const interactables = document.querySelectorAll(".interactable");
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.setAttribute('scale', '1.05 1.05 1.05');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.setAttribute('scale', '1 1 1');
+            });
         });
     </script>
-
 </body>
 
 </html>
