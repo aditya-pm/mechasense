@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+
+<body>
+    <a-scene background="color: #ECECEC">
+
+        <a-entity id="laptop" position="0 1.2 -3">
+
+            <!-- Base body -->
+            <a-box id="base" width="1.2" height="0.05" depth="0.8" material="color:#555; metalness:0.7; roughness:0.3">
+            </a-box>
+
+            <!-- Keyboard -->
+            <a-box id="keyboard" width="1" height="0.02" depth="0.5" position="0 0.04 0" material="color:#333">
+            </a-box>
+
+            <!-- Trackpad -->
+            <a-box id="trackpad" width="0.3" height="0.01" depth="0.2" position="0 -0.01 0.25" material="color:#888">
+            </a-box>
+
+            <!-- Screen frame -->
+            <a-box id="screen_frame" width="1.2" height="0.75" depth="0.03" position="0 0.45 -0.4"
+                material="color:#444">
+            </a-box>
+
+            <!-- Display -->
+            <a-box id="screen" width="1.1" height="0.65" depth="0.01" position="0 0.45 -0.39" material="color:#111">
+            </a-box>
+
+            <!-- Motherboard -->
+            <a-box id="motherboard" width="0.7" height="0.02" depth="0.4" position="0 -0.03 -0.1"
+                material="color:#1f7a1f">
+            </a-box>
+
+            <!-- CPU -->
+            <a-box id="cpu" width="0.15" height="0.03" depth="0.15" position="0.2 0.05 -0.1" material="color:gold">
+            </a-box>
+
+            <!-- RAM -->
+            <a-box id="ram" width="0.35" height="0.02" depth="0.1" position="-0.2 0.05 -0.1" material="color:green">
+            </a-box>
+
+            <!-- Battery -->
+            <a-box id="battery" width="0.5" height="0.04" depth="0.2" position="0 -0.02 0.3" material="color:#cc6600">
+            </a-box>
+
+            <!-- Fan -->
+            <a-cylinder id="fan" radius="0.07" height="0.03" position="0.4 0.04 -0.2" material="color:black">
+            </a-cylinder>
+
+        </a-entity>
+
+        <a-camera position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-camera>
+
+    </a-scene>
+
+    <script>
+        let exploded = false;
+
+        document.querySelector("a-scene").addEventListener("click", function () {
+
+            if (!exploded) {
+
+                document.querySelector("#battery").setAttribute("animation",
+                    "property: position; to: 0 -0.3 0.9; dur: 800");
+
+                document.querySelector("#ram").setAttribute("animation",
+                    "property: position; to: -0.6 0.3 -0.2; dur: 800");
+
+                document.querySelector("#cpu").setAttribute("animation",
+                    "property: position; to: 0.6 0.3 -0.2; dur: 800");
+
+                document.querySelector("#fan").setAttribute("animation",
+                    "property: position; to: 0.9 0.3 -0.4; dur: 800");
+
+                document.querySelector("#screen_frame").setAttribute("animation",
+                    "property: position; to: 0 1.2 -0.7; dur: 800");
+
+                document.querySelector("#screen").setAttribute("animation",
+                    "property: position; to: 0 1.2 -0.68; dur: 800");
+
+                exploded = true;
+
+            } else {
+
+                document.querySelector("#battery").setAttribute("animation",
+                    "property: position; to: 0 -0.02 0.3; dur: 800");
+
+                document.querySelector("#ram").setAttribute("animation",
+                    "property: position; to: -0.2 0.05 -0.1; dur: 800");
+
+                document.querySelector("#cpu").setAttribute("animation",
+                    "property: position; to: 0.2 0.05 -0.1; dur: 800");
+
+                document.querySelector("#fan").setAttribute("animation",
+                    "property: position; to: 0.4 0.04 -0.2; dur: 800");
+
+                document.querySelector("#screen_frame").setAttribute("animation",
+                    "property: position; to: 0 0.45 -0.4; dur: 800");
+
+                document.querySelector("#screen").setAttribute("animation",
+                    "property: position; to: 0 0.45 -0.39; dur: 800");
+
+                exploded = false;
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
